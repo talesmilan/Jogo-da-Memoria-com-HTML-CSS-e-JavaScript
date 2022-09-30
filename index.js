@@ -41,7 +41,7 @@ document.addEventListener('click', (e) => {
                 ultimoBotao = i
                 primeiro = false
                 ocupado = false
-            } else if (!primeiro && !botoes[i] && !ocupado) {
+            } else if (!primeiro && !botoes[i] && !ocupado && ultimoBotao !== i) {
                 console.log("chegou aqui")
                 ocupado = true
                 botoes[i] = true
