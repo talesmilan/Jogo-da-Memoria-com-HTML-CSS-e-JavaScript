@@ -5,6 +5,15 @@ const fontes = []
 
 let imagens = []
 
+let botoes = []
+
+let ultimaImagem = ""
+let ultimoBotao = ""
+let pares = 0
+let tentativas = 0
+let primeiro = true
+let ocupado = false
+
 for (let i = 0; i < 9; i++) {
     fontes[i] = `./imagens/imagem${i}.png`
     fontes[i+9] = `./imagens/imagem${i}.png`
@@ -12,6 +21,8 @@ for (let i = 0; i < 9; i++) {
 
 for (let i = 0; i < 18; i++) {
     imagens[i] = document.querySelector(`.btn${i}`)
+    botoes[i] = false
+
 }
 
 embaralharArray(fontes)
@@ -22,14 +33,45 @@ document.addEventListener('click', (e) => {
 
     for(let i in imagens) {
         if (elemento.classList.contains(`btn${i}`)) {
-            imagens[i].setAttribute('src', fontes[i])
-            console.log(i)
+
+            if (primeiro && !botoes[i] && !ocupado) {
+                ocupado = true
+                imagens[i].setAttribute('src', fontes[i])
+                ultimaImagem = fontes[i]
+                ultimoBotao = i
+                primeiro = false
+                ocupado = false
+            } else if (!primeiro && !botoes[i] && !ocupado) {
+                console.log("chegou aqui")
+                ocupado = true
+                botoes[i] = true
+                botoes[ultimoBotao] = true
+                imagens[i].setAttribute('src', fontes[i])
+                setTimeout(function() { 
+                    if (ultimaImagem === fontes[i]) {
+                        pares++
+                        tentativas++
+                        primeiro = true
+                        ocupado = false
+                    } else {
+                        imagens[i].setAttribute('src', './imagens/carta.png')
+                        imagens[ultimoBotao].setAttribute('src', './imagens/carta.png')
+                        botoes[i] = false
+                        botoes[ultimoBotao] = false
+                        tentativas++
+                        primeiro = true
+                        ocupado = false
+                    }
+                }, 2000);
+            }
+
         }
-        console.log(i)
+
     }
 
-
 })
+
+
 
 function embaralharArray(array) {
     // Loop em todos os elementos
