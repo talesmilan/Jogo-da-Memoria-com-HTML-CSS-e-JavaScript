@@ -1,39 +1,32 @@
-
-
-
+// Declaração das variáveis necessárias
 const fontes = []
-
-let imagens = []
-
-let botoes = []
-
+const imagens = []
+const botoes = []
 let ultimaImagem = ""
 let ultimoBotao = ""
 let pares = 0
 let tentativas = 0
 let primeiro = true
 let ocupado = false
-
+// Colocando o arquivo fontes das imagens
 for (let i = 0; i < 9; i++) {
     fontes[i] = `./imagens/imagem${i}.png`
     fontes[i+9] = `./imagens/imagem${i}.png`
 }
-
+// Iniciando as variáveis das imagens e dos botões
 for (let i = 0; i < 18; i++) {
     imagens[i] = document.querySelector(`.btn${i}`)
     botoes[i] = false
-
 }
-
+// Embaralhando as imagens
 embaralharArray(fontes)
-
+// Capturando o click
 document.addEventListener('click', (e) => {
-
+    // Seleciona o botão clicado
     let elemento = e.target
-
     for(let i in imagens) {
         if (elemento.classList.contains(`btn${i}`)) {
-
+            // Programando as ações da primeira carta clicada
             if (primeiro && !botoes[i] && !ocupado) {
                 ocupado = true
                 imagens[i].setAttribute('src', fontes[i])
@@ -41,18 +34,22 @@ document.addEventListener('click', (e) => {
                 ultimoBotao = i
                 primeiro = false
                 ocupado = false
+            // Programando as ações da segunda carta clicada
             } else if (!primeiro && !botoes[i] && !ocupado && ultimoBotao !== i) {
                 console.log("chegou aqui")
                 ocupado = true
                 botoes[i] = true
                 botoes[ultimoBotao] = true
                 imagens[i].setAttribute('src', fontes[i])
-                setTimeout(function() { 
+                // Programando o delay
+                setTimeout(function() {
+                    // Se as carta forma iguais executa essas ações 
                     if (ultimaImagem === fontes[i]) {
                         pares++
                         tentativas++
                         primeiro = true
                         ocupado = false
+                    // Se as cartas forma diferentes executas essas ações
                     } else {
                         imagens[i].setAttribute('src', './imagens/carta.png')
                         imagens[ultimoBotao].setAttribute('src', './imagens/carta.png')
@@ -64,15 +61,10 @@ document.addEventListener('click', (e) => {
                     }
                 }, 2000);
             }
-
         }
-
     }
-
 })
-
-
-
+// Função que embaralha um array
 function embaralharArray(array) {
     // Loop em todos os elementos
     for (let i = array.length - 1; i > 0; i--) {
@@ -80,5 +72,5 @@ function embaralharArray(array) {
     const j = Math.floor(Math.random() * (i + 1));
     // Reposicionando elemento
     [array[i], array[j]] = [array[j], array[i]];
-}
+    }
 }

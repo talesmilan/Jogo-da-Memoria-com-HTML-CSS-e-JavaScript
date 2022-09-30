@@ -14,10 +14,6 @@ body {
     scale: 0.9;
 }
 
-.jogo {
-
-}
-
 .tabuleiro {
     display: flex;
     justify-content: center;
