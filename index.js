@@ -114,7 +114,6 @@ function embaralharArray(array) {
 function finalizar() {
     // Se os pares forem igual a 9 finaliza o jogo
     if (pares == 9) {
-        console.log(segundos)
         pause()
         // Marca os pontos
         if (tentativas < 15) {
@@ -133,11 +132,11 @@ function finalizar() {
         }
         setTimeout(() => {
             // Cria uma div para mostrar a pontuação final
-            finaliza.innerHTML = `<div class='finalizar'><p>Bônus por pares: ${pares * 100}</p>`
+            finaliza.innerHTML = `<div class='tela'><div class='finalizar'><p>Bônus por pares: ${pares * 100}</p>`
                     +`<p>Bônus por tentativas: ${bonusPorTentativas}</p>`
                     +`<p>Bônus pelo tempo: ${bonusTempo}</p>`
                     +`<br><p>Pontuação Total: ${bonusTempo + bonusPorTentativas + (pares*100)}</p>`
-                    +"<button class='reiniciar'>Reiniciar</button></div>"
+                    +"<button class='reiniciar'>Reiniciar</button></div></div>"
             document.body.appendChild(finaliza)
         }, 1500)
     }
