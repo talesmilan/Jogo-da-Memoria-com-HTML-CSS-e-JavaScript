@@ -8,6 +8,7 @@ let pares = 0
 let tentativas = 0
 let primeiro = true
 let ocupado = false
+let cronometroAtivado = false
 // Colocando o arquivo fontes das imagens
 for (let i = 0; i < 9; i++) {
     fontes[i] = `./imagens/imagem${i}.png`
@@ -28,6 +29,10 @@ document.addEventListener('click', (e) => {
         if (elemento.classList.contains(`btn${i}`)) {
             // Programando as ações da primeira carta clicada
             if (primeiro && !botoes[i] && !ocupado) {
+                // Começa a conta o tempo
+                if (!cronometroAtivado) {
+                    start()
+                }
                 ocupado = true
                 imagens[i].setAttribute('src', fontes[i])
                 ultimaImagem = fontes[i]
@@ -47,6 +52,7 @@ document.addEventListener('click', (e) => {
                     if (ultimaImagem === fontes[i]) {
                         pares++
                         tentativas++
+                        atualizarPontos()
                         primeiro = true
                         ocupado = false
                     // Se as cartas forma diferentes executas essas ações
@@ -64,6 +70,12 @@ document.addEventListener('click', (e) => {
         }
     }
 })
+// Função que atualiza os pontos
+function atualizarPontos() {
+    let pontos = pares * 100
+    let placar = document.querySelector('.pontos')
+    placar.innerHTML = "Pontos: " + String(pontos)
+}
 // Função que embaralha um array
 function embaralharArray(array) {
     // Loop em todos os elementos
