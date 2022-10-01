@@ -6,9 +6,14 @@ let ultimaImagem = ""
 let ultimoBotao = ""
 let pares = 0
 let tentativas = 0
+let bonusPorTentativas = 0
+let bonusTempo = 0
 let primeiro = true
 let ocupado = false
 let cronometroAtivado = false
+let placar = document.querySelector('.pontos')
+let textoTempo = document.querySelector('.cronometro')
+let finaliza = document.createElement('div');
 // Colocando o arquivo fontes das imagens
 for (let i = 0; i < 9; i++) {
     fontes[i] = `./imagens/imagem${i}.png`
@@ -41,7 +46,6 @@ document.addEventListener('click', (e) => {
                 ocupado = false
             // Programando as ações da segunda carta clicada
             } else if (!primeiro && !botoes[i] && !ocupado && ultimoBotao !== i) {
-                console.log("chegou aqui")
                 ocupado = true
                 botoes[i] = true
                 botoes[ultimoBotao] = true
@@ -53,6 +57,7 @@ document.addEventListener('click', (e) => {
                         pares++
                         tentativas++
                         atualizarPontos()
+                        finalizar()
                         primeiro = true
                         ocupado = false
                     // Se as cartas forma diferentes executas essas ações
@@ -69,11 +74,30 @@ document.addEventListener('click', (e) => {
             }
         }
     }
+    // Programa o botão reiniciar
+    if (elemento.classList.contains(`reiniciar`)) {
+        reset()
+        for (let i in imagens) {
+            imagens[i].setAttribute('src', './imagens/carta.png')
+            botoes[i] = false
+        }
+        ultimaImagem = ""
+        ultimoBotao = ""
+        pares = 0
+        tentativas = 0
+        bonusPorTentativas = 0
+        bonusTempo = 0
+        primeiro = true
+        ocupado = false
+        cronometroAtivado = false
+        embaralharArray(fontes)
+        atualizarPontos()
+        finaliza.innerHTML = ""
+    }
 })
 // Função que atualiza os pontos
 function atualizarPontos() {
     let pontos = pares * 100
-    let placar = document.querySelector('.pontos')
     placar.innerHTML = "Pontos: " + String(pontos)
 }
 // Função que embaralha um array
@@ -86,3 +110,40 @@ function embaralharArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
     }
 }
+// Função que finaliza o jogo
+function finalizar() {
+    // Se os pares forem igual a 9 finaliza o jogo
+    if (pares == 9) {
+        console.log(segundos)
+        pause()
+        // Marca os pontos
+        if (tentativas < 15) {
+            bonusPorTentativas += 1500
+        } else if (tentativas < 25) {
+            bonusPorTentativas += 1000
+        } else if (tentativas < 40) {
+            bonusPorTentativas += 500
+        }
+        if (segundos < 30 && minutos === 0) {
+            bonusTempo += 1500
+        } else if (minutos < 1) {
+            bonusTempo += 1000
+        } else if (minutos < 2) {
+            bonusTempo += 500
+        }
+        setTimeout(() => {
+            // Cria uma div para mostrar a pontuação final
+            finaliza.innerHTML = `<div class='finalizar'><p>Bônus por pares: ${pares * 100}</p>`
+                    +`<p>Bônus por tentativas: ${bonusPorTentativas}</p>`
+                    +`<p>Bônus pelo tempo: ${bonusTempo}</p>`
+                    +`<br><p>Pontuação Total: ${bonusTempo + bonusPorTentativas + (pares*100)}</p>`
+                    +"<button class='reiniciar'>Reiniciar</button></div>"
+            document.body.appendChild(finaliza)
+        }, 1500)
+    }
+}
+
+
+
+
+
